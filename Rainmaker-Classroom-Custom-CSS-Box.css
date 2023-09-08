@@ -1,0 +1,19 @@
+.course-body-height[data-v-fa0e27b2] {
+  max-height: 450rem;
+}
+.post-body-description[data-v-fa0e27b2] {
+  height: 700px;
+}
+
+#instructor-card {
+  visibility: hidden;
+}
+
+/*
+ * Hide 'Show less' element, since lesson body automatically expands when lesson view loads.
+ * This element does not have `id` associated with it, so can only use most specific element and class selectors possible.
+ * Warning: will hide any other `<span>` elements that have the exact same class names, since we cannot select by text content with CSS
+*/
+span.text-blue-500.cursor-pointer.pb-2 {
+  visibility: hidden;
+}

@@ -1,0 +1,7 @@
+The following code fixes the issues with the Neue theme in RainmakerAI’s member product area (courses).
+
+The CSS hides the Instructor info box, and hides the “See Less” link at the bottom of the text box.
+
+The JS snippets check for the presence of the Read More link in the text box, click the link when it’s present, and then times out after two hours so there isn’t an ongoing memory leak in the end user’s browser.
+
+Code by Caleb Sattgast
