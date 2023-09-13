@@ -12,11 +12,27 @@
   var intervalDuration = 0.5;
   var maxLife = 5; // cancel interval after 5 seconds
   var maxCount = maxLife / intervalDuration;
+  
+  var debounce = function(func, wait) {
+    var timeoutId = null;
+    if (typeof wait === 'undefined') {
+      wait = 300;
+    }
+    return function() {
+      var context = this;
+      var args = Array.prototype.slice.call(arguments);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(function() {
+        timeoutId = null;
+        func.apply(context, args);
+      }, wait);
+    }
+  };
 
-  // Interval that is run on initial page load
-  var countOuter = 0;
+  // Intervals that are run on initial page load
+  var countOuterExpandLesson = 0;
   var expandLessonOnPageLoad = setInterval(function() {
-    if (countOuter > maxCount) {
+    if (countOuterExpandLesson > maxCount) {
       clearInterval(expandLessonOnPageLoad);
     }
     var readMoreEl = document.getElementById('read-more-post');
@@ -24,7 +40,47 @@
       readMoreEl.click();
       clearInterval(expandLessonOnPageLoad);
     }
-    countOuter++;
+    countOuterExpandLesson++;
+  }, intervalDuration * 1000);
+  
+  var setupFaqs = debounce(function(faqContainers) {
+    faqContainers.forEach(function(container) {
+      const faqAnswer = container.querySelector('[data-title="faq-answer"]');
+      const faqQuestion = container.querySelector('[data-title="faq-question"]');
+      const toggleIcon = container.querySelector('.toggle-faq');
+      var handleFaqClick = function() {
+        if (faqAnswer.classList.contains('show')) {
+          faqAnswer.classList.remove('show');
+          toggleIcon.innerHTML = '+';
+        } else {
+          // Collapse other open FAQs and reset toggle icon to plus symbol
+          document.querySelectorAll('[data-title="faq-answer"].show').forEach(function(el) {
+            el.classList.remove('show');
+            var question = el.previousElementSibling;
+            var prevToggleIcon = question.querySelector('.toggle-faq');
+            prevToggleIcon.innerHTML = '+';
+          });
+          // Show FAQ that was clicked on
+          faqAnswer.classList.add('show');
+          toggleIcon.innerHTML = '&ndash;';
+        }
+      };
+      faqQuestion.removeEventListener('click', handleFaqClick);
+      faqQuestion.addEventListener('click', handleFaqClick);
+    });
+  });
+
+  var countOuterSetupFaq = 0;
+  var setupFaqOnPageLoad = setInterval(function() {
+    if (countOuterSetupFaq > maxCount) {
+      clearInterval(setupFaqOnPageLoad);
+    }
+    var faqContainers = document.querySelectorAll('[data-title="faq-container"]');
+    if (faqContainers.length > 0) {
+      setupFaqs(faqContainers);
+      clearInterval(setupFaqOnPageLoad);
+    }
+    countOuterSetupFaq++;
   }, intervalDuration * 1000);
 
   // Listen for an HREF change, such as a user navigating to a different lesson without refreshing page
@@ -34,10 +90,10 @@
     if (currentHref !== document.location.href) {
       currentHref = document.location.href;
 
-      // Interval that is run on HREF change
-      var countInner = 0;
+      // Intervals that are run on HREF change
+      var countInnerExpandLesson = 0;
       var expandLessonOnHrefChange = setInterval(function() {
-        if (countInner > maxCount) {
+        if (countInnerExpandLesson > maxCount) {
           clearInterval(expandLessonOnHrefChange);
         }
         var readMoreEl = document.getElementById('read-more-post');
@@ -45,7 +101,21 @@
           readMoreEl.click();
           clearInterval(expandLessonOnHrefChange);
         }
-        countInner++;
+        countInnerExpandLesson++;
+      }, intervalDuration * 1000);
+
+      var countInnerSetupFaq = 0;
+      var setupFaqOnHrefChange = setInterval(function() {
+        clearInterval(setupFaqOnPageLoad);
+        if (countInnerSetupFaq > maxCount) {
+          clearInterval(setupFaqOnHrefChange);
+        }
+        var faqContainers = document.querySelectorAll('[data-title="faq-container"]');
+        if (faqContainers.length > 0) {
+          setupFaqs(faqContainers);
+          clearInterval(setupFaqOnHrefChange);
+        }
+        countInnerSetupFaq++;
       }, intervalDuration * 1000);
     }
   });
