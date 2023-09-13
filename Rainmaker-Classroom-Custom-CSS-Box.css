@@ -1,12 +1,26 @@
+.max-w-6xl {
+    max-width: 98rem;
+}
+
+.breadCrumb__nav {
+    color: #325988 !important;
+    font-size: 18px !important;
+}
+
 .course-body-height[data-v-fa0e27b2] {
   max-height: 450rem;
 }
 .post-body-description[data-v-fa0e27b2] {
-  height: 700px;
+  height: fit-content !important;
 }
 
 #instructor-card {
   visibility: hidden;
+}
+
+@media screen and (min-width: 2560px)
+#post-details-container[data-v-fa0e27b2] {
+    max-width: 90% !important;
 }
 
 /*
@@ -16,4 +30,71 @@
 */
 span.text-blue-500.cursor-pointer.pb-2 {
   visibility: hidden;
+}
+
+/* Tapered horizontal rule  */
+.tapered {
+  border: 0;
+  height: 2px;
+  width: 80%;
+  background: #333;
+  background-image: linear-gradient(to right, #ccc, #333, #ccc);
+  margin: 20px auto;
+  text-align: center;
+}
+
+/* Get Help Button floated upper right */
+.getHelpButton {
+  background-color: #2d567c; /* Green */
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  float:right;
+  font-size: 16px;
+  margin: 4px 10px;
+  cursor: pointer;
+}
+
+/*
+ * CSS for Accordion FAQ.
+*/
+
+[data-title*='faq-container'] {
+  border-bottom: none;
+  padding: 0 5px 0 10px;
+  margin: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #eaeaea;
+  border-left: 5px solid #d04437 !important;
+  -webkit-box-shadow: 7px 5px 7px 0px rgba(0,0,0,0.12);
+  -moz-box-shadow: 7px 8px 7px 0px rgba(0,0,0,0.12);
+  box-shadow: 7px 5px 7px 0px rgba(0,0,0,0.12);
+}
+
+[data-title='faq-question'] {
+  cursor: pointer;
+}
+
+[data-title='faq-answer'] {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  padding: 0;
+}
+
+[data-title='faq-answer'].show {
+  max-height: 100vh;
+  padding: 0 1em 1em 1em;
+  margin-top: -1em;
+}
+
+.toggle-faq {
+  display: inline-block;
+  padding-right: 0.5em;
+  font-weight: 900;
 }
